@@ -2,13 +2,18 @@ This section describes mount options specific to BTRFS.  For the generic mount
 options please refer to ``mount(8)`` manpage. The options are sorted alphabetically
 (discarding the *no* prefix).
 
-.. note::
-        Most mount options apply to the whole filesystem and only options in the
-        first mounted subvolume will take effect. This is due to lack of implementation
-        and may change in the future. This means that (for example) you can't set
-        per-subvolume *nodatacow*, *nodatasum*, or *compress* using mount options. This
-        should eventually be fixed, but it has proved to be difficult to implement
-        correctly within the Linux VFS framework.
+Mount options are of two kinds, generic (that are handled by VFS layer) and
+specific, handled by the filesystem. The following list shows which are
+applicable to individual subvolume mounts, while there are more options that
+always affect the whole filesystem:
+
+- generic: noatime/relatime/..., nodev, nosuid, ro, rw, dirsync
+- fs-specific: compress, autodefrag, nodatacow, nodatasum
+
+An example of whole filesystem options is eg. *space_cache*, *rescue*, *device*,
+*skip_balance*, etc. The exceptional options are *subvol* and *subvolid* that
+are actually used for mounting a given subvolume and can be specified only once
+for the mount.
 
 Mount options are processed in order, only the last occurrence of an option
 takes effect and may disable other options due to constraints (see eg.
